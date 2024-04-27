@@ -3,7 +3,7 @@ import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
 
-
+import os
 class PredictPipeline:
     def __init__(self):
         pass
@@ -11,7 +11,7 @@ class PredictPipeline:
     def predict(self,features):
         try:
             model_path=os.path.join("artifacts","model.pkl")
-            preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
+            preprocessor_path=os.path.join('artifacts','proprocessor.pkl')
             print("Before Loading")
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
@@ -26,39 +26,49 @@ class PredictPipeline:
 
 
 class CustomData:
-    def __init__(  self,
-        gender: str,
-        race_ethnicity: str,
-        parental_level_of_education,
-        lunch: str,
-        test_preparation_course: str,
-        reading_score: int,
-        writing_score: int):
+    def __init__(self,
+                gender: str,
+                married: bool,
+                dependents: str,
+                education: str,
+                self_employed: bool,
+                applicant_income: float,
+                coapplicant_income: float,
+                loan_amount: float,
+                loan_amount_term: str,
+                credit_history: int,  # Assuming credit history is a numerical score
+                property_area: str,
+                loan_status: str):
 
         self.gender = gender
+        self.married = married
+        self.dependents = dependents
+        self.education = education
+        self.self_employed = self_employed
+        self.applicant_income = applicant_income
+        self.coapplicant_income = coapplicant_income
+        self.loan_amount = loan_amount
+        self.loan_amount_term = loan_amount_term
+        self.credit_history = credit_history
+        self.property_area = property_area
 
-        self.race_ethnicity = race_ethnicity
-
-        self.parental_level_of_education = parental_level_of_education
-
-        self.lunch = lunch
-
-        self.test_preparation_course = test_preparation_course
-
-        self.reading_score = reading_score
-
-        self.writing_score = writing_score
 
     def get_data_as_data_frame(self):
         try:
             custom_data_input_dict = {
-                "gender": [self.gender],
-                "race_ethnicity": [self.race_ethnicity],
-                "parental_level_of_education": [self.parental_level_of_education],
-                "lunch": [self.lunch],
-                "test_preparation_course": [self.test_preparation_course],
-                "reading_score": [self.reading_score],
-                "writing_score": [self.writing_score],
+#"Loan_ID": [],  # Assuming Loan_ID is system generated, so an empty list
+                "Gender": [self.gender],
+                "Married": [self.married],
+                "Dependents": [self.dependents],
+                "Education": [self.education],
+                "Self_Employed": [self.self_employed],
+                "ApplicantIncome": [self.applicant_income],
+                "CoapplicantIncome": [self.coapplicant_income],
+                "LoanAmount": [self.loan_amount],
+                "Loan_Amount_Term": [self.loan_amount_term],
+                "Credit_History": [self.credit_history],
+                "Property_Area": [self.property_area],
+                
             }
 
             return pd.DataFrame(custom_data_input_dict)

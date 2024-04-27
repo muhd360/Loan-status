@@ -1,12 +1,15 @@
 import sys
 from dataclasses import dataclass
-
+import os
 import numpy as np 
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
+
+src_path = os.path.abspath(os.path.join("/home/muhd/Desktop/python-proj/mlproject"))
+sys.path.append(src_path)
 
 from src.exception import CustomException
 from src.logger import logging
@@ -28,14 +31,12 @@ class DataTransformation:
         
         '''
         try:
-            numerical_columns = ["writing_score", "reading_score"]
-            categorical_columns = [
-                "gender",
-                "race_ethnicity",
-                "parental_level_of_education",
-                "lunch",
-                "test_preparation_course",
-            ]
+            numerical_columns = ['ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+       'Loan_Amount_Term', 'Credit_History']
+            categorical_columns = ['Gender', 'Married', 'Dependents', 'Education',
+       'Self_Employed', 'Property_Area']
+            
+
 
             num_pipeline= Pipeline(
                 steps=[
@@ -53,6 +54,9 @@ class DataTransformation:
                 ("scaler",StandardScaler(with_mean=False))
                 ]
 
+            )
+            test_pipeline=Pipeline(
+                steps=("one_hot_encoder",OneHotEncoder()),
             )
 
             logging.info(f"Categorical columns: {categorical_columns}")
@@ -78,6 +82,7 @@ class DataTransformation:
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
+            #test_df=test_df.drop(columns='Loan_ID',axis=1)
 
             logging.info("Read train and test data completed")
 
@@ -85,26 +90,29 @@ class DataTransformation:
 
             preprocessing_obj=self.get_data_transformer_object()
 
-            target_column_name="math_score"
-            numerical_columns = ["writing_score", "reading_score"]
+            target_column_name='Loan_Status'
+            #numerical_columns = ["ApplicantIncome", "CoapplicantIncome","LoanAmount"]
 
-            input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
+
+            input_feature_train_df=train_df.drop(columns=[target_column_name,'Loan_ID'],axis=1)
             target_feature_train_df=train_df[target_column_name]
+            
+            target_feature_train_df.replace({'Y': 1, 'N': 0}, inplace=True)
 
-            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
-            target_feature_test_df=test_df[target_column_name]
+            input_feature_test_df=test_df.drop(columns=['Loan_ID'],axis=1)
+            #target_feature_test_df=test_df[target_column_name]
 
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
 
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
-            input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
+            test_arr=preprocessing_obj.transform(input_feature_test_df)
 
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
-            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+            #test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
             logging.info(f"Saved preprocessing object.")
 

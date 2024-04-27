@@ -1,7 +1,11 @@
 import os
 import sys
-from dataclasses import dataclass
+import numpy as np
 
+src_path = os.path.abspath(os.path.join("/home/muhd/Desktop/python-proj/mlproject"))
+sys.path.append(src_path)
+from dataclasses import dataclass
+import pandas as pd
 from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
@@ -31,12 +35,24 @@ class ModelTrainer:
     def initiate_model_trainer(self,train_array,test_array):
         try:
             logging.info("Split training and test input data")
-            X_train,y_train,X_test,y_test=(
+            X_train,y_train=(
                 train_array[:,:-1],
                 train_array[:,-1],
-                test_array[:,:-1],
-                test_array[:,-1]
+
             )
+
+            X_test=(
+                test_array,
+                #test_array[:,-1]
+
+            )
+            X_test=np.array(X_test)
+            X_test=np.squeeze(X_test)
+          
+            #X_test=X_test.reshape(X_test.shape[0], -1)
+            print(X_train.shape,y_train.shape,X_test.shape)
+
+
             models = {
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree": DecisionTreeRegressor(),
@@ -83,34 +99,49 @@ class ModelTrainer:
                 }
                 
             }
+            logging.info(f"code worked till here")
+            empty_df=pd.DataFrame()
+            empty_soln=pd.DataFrame()
+            for model_name, model in models.items():
+                # Train each model
+                model.fit(X_train, y_train)
+                
+                # Make predictions
+                predictions = model.predict(X_test)
+                
+                # Store predictions in dataframe
+                empty_df[model_name] = model.predict(X_train)
+                empty_soln[model_name] = predictions
 
-            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
-                                             models=models,param=params)
+            #model_out:dict=best_output.fit(X_train=X_train,y_train=y_train,models=models,param=params)
+
+            #model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
+            #                                  models=models,param=params)
             
-            ## To get best model score from dict
-            best_model_score = max(sorted(model_report.values()))
+            # ## To get best model score from dict
+            # best_model_score = max(sorted(model_report.values()))
 
-            ## To get best model name from dict
+            # ## To get best model name from dict
 
-            best_model_name = list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
-            best_model = models[best_model_name]
+            # best_model_name = list(model_report.keys())[
+            #     list(model_report.values()).index(best_model_score)
+            # ]
+            # best_model = models[best_model_name]
 
-            if best_model_score<0.6:
-                raise CustomException("No best model found")
-            logging.info(f"Best found model on both training and testing dataset")
+            # if best_model_score<0.6:
+
+            #     raise CustomException("No best model found")
+            logging.info(f"working ok")
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=best_model
+                obj=XGBRegressor()
             )
 
-            predicted=best_model.predict(X_test)
+            # predicted=best_model.predict(X_test)
 
-            r2_square = r2_score(y_test, predicted)
-            return r2_square
-            
+            # r2_square = r2_score(y_test, predicted)
+
 
 
 
