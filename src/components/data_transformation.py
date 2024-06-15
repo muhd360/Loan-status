@@ -50,13 +50,13 @@ class DataTransformation:
 
                 steps=[
                 ("imputer",SimpleImputer(strategy="most_frequent")),
-                ("one_hot_encoder",OneHotEncoder()),
+                ("one_hot_encoder",OneHotEncoder(handle_unknown='ignore')),
                 ("scaler",StandardScaler(with_mean=False))
                 ]
 
             )
             test_pipeline=Pipeline(
-                steps=("one_hot_encoder",OneHotEncoder()),
+                steps=("one_hot_encoder",OneHotEncoder(handle_unknown='ignore')),
             )
 
             logging.info(f"Categorical columns: {categorical_columns}")

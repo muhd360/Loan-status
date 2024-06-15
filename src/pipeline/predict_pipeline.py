@@ -10,13 +10,14 @@ class PredictPipeline:
 
     def predict(self,features):
         try:
-            model_path=os.path.join("artifacts","model.pkl")
-            preprocessor_path=os.path.join('artifacts','proprocessor.pkl')
+            model_path=os.path.join("src/components/artifacts/model.pkl")
+            preprocessor_path=os.path.join('src/components/artifacts/proprocessor.pkl')
             print("Before Loading")
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
             print("After Loading")
             data_scaled=preprocessor.transform(features)
+            
             preds=model.predict(data_scaled)
             return preds
         
@@ -27,36 +28,43 @@ class PredictPipeline:
 
 class CustomData:
     def __init__(self,
+                id:str,
                 gender: str,
-                married: bool,
+                married: str,
                 dependents: str,
                 education: str,
-                self_employed: bool,
+                self_employed: str,
                 applicant_income: float,
                 coapplicant_income: float,
                 loan_amount: float,
                 loan_amount_term: str,
                 credit_history: int,  # Assuming credit history is a numerical score
                 property_area: str,
-                loan_status: str):
-
-        self.gender = gender
-        self.married = married
-        self.dependents = dependents
-        self.education = education
-        self.self_employed = self_employed
+                ):
+        self.id=self.clean_input(id)
+        self.gender = self.clean_input(gender)
+        self.married = self.clean_input(married)
+        self.dependents = self.clean_input(dependents)
+        self.education = self.clean_input(education)
+        self.self_employed = self.clean_input(self_employed)
         self.applicant_income = applicant_income
         self.coapplicant_income = coapplicant_income
         self.loan_amount = loan_amount
         self.loan_amount_term = loan_amount_term
         self.credit_history = credit_history
-        self.property_area = property_area
+        self.property_area = self.clean_input(property_area)
+
+    def clean_input(self, value: str) -> str:
+        if isinstance(value, str):
+            return value.strip("'\"")  # Remove both single and double quotes if present
+        return value
 
 
     def get_data_as_data_frame(self):
         try:
             custom_data_input_dict = {
 #"Loan_ID": [],  # Assuming Loan_ID is system generated, so an empty list
+                "ID":[self.id],
                 "Gender": [self.gender],
                 "Married": [self.married],
                 "Dependents": [self.dependents],

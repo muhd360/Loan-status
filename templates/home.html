@@ -7,11 +7,17 @@
             <legend>Loan Application</legend>
 
             <div class="mb-3">
+                <label class="form-label">Loan ID</label>
+                <input type="text" class="form-control" name="LoanID" placeholder="Enter Loan ID" required>
+            </div>
+            
+
+            <div class="mb-3">
                 <label class="form-label">Gender</label>
                 <select class="form-control" name="Gender" required>
                     <option value="" selected disabled>Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             </div>
 
@@ -24,16 +30,17 @@
                 </select>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label class="form-label">Dependents</label>
                 <input class="form-control" type="number" name="Dependents" min="0" placeholder="Number of Dependents">
-            </div>
+            </div> -->
 
             <div class="mb-3">
+                <label class="form-label">Education</label>
                 <select class="form-control" name="Education" required>
-                    <option value="" selected disabled>Select Gender</option>
-                    <option value="Graduate">Male</option>
-                    <option value="Not Graduate">Female</option>
+                    <option value="" selected disabled>Select option</option>
+                    <option value="Graduate">Graduate</option>
+                    <option value="Not Graduate">not Graduate</option>
                 </select>
             </div>
 
@@ -78,8 +85,8 @@
 
             <div class="mb-3">
                 <label class="form-label">Property Area</label>
-                <select class="form-control" name="Credit_History" required>
-                    <option value="" selected disabled>Select Credit History</option>
+                <select class="form-control" name="Area" required>
+                    <option value="" selected disabled>Select area</option>
                     <option value="Urban">urban</option>
                     <option value="Semiurban">semi</option>
                     <option value="Rural">rural</option>
@@ -92,7 +99,7 @@
         </form>
     </div>
     <h2>
-        THE  prediction is {{results}}
+        THE  prediction is {{renuka}}
     </h2>
     <body>
 </html>
