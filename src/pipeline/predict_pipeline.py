@@ -4,6 +4,8 @@ from src.exception import CustomException
 from src.utils import load_object
 
 import os
+
+
 class PredictPipeline:
     def __init__(self):
         pass
@@ -16,9 +18,17 @@ class PredictPipeline:
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
             print("After Loading")
-            data_scaled=preprocessor.transform(features)
+            ds=features.drop(columns="ID",axis=1)
+            ds=preprocessor.transform(features)
+            preds=model.predict(ds)
+            #print(features)
+            #data_scaled=preprocessor.transform(features)
             
-            preds=model.predict(data_scaled)
+            #preds=model.predict(data_scaled)
+            # print(preds)
+            # for column in preds.index:
+            #     print(f"Column: {column}, Type: {type(preds[column])}")
+
             return preds
         
         except Exception as e:
@@ -34,11 +44,11 @@ class CustomData:
                 dependents: str,
                 education: str,
                 self_employed: str,
-                applicant_income: float,
-                coapplicant_income: float,
+                applicant_income: int,
+                coapplicant_income: int,
                 loan_amount: float,
-                loan_amount_term: str,
-                credit_history: int,  # Assuming credit history is a numerical score
+                loan_amount_term: float,
+                credit_history: float,  # Assuming credit history is a numerical score
                 property_area: str,
                 ):
         self.id=self.clean_input(id)

@@ -32,12 +32,12 @@ def predict_datapoint():
                 loan_amount=float(request.form.get('LoanAmount')),  # Assuming loan amount is numerical
                 loan_amount_term=float(request.form.get('Loan_Amount_Term')),
                 credit_history=float(request.form.get('Credit_History')),
-                property_area=request.form.get('Property_Area')
+                property_area=request.form.get('Area')
             )
 
             # Convert to DataFrame
             pred_df = data.get_data_as_data_frame()
-            print(pred_df)
+        #print(pred_df)
             
 
             print("before")
@@ -45,20 +45,14 @@ def predict_datapoint():
             predict_pipeline=PredictPipeline()
             print("mid")
             results=predict_pipeline.predict(pred_df)
+            print(results)
             print("after")
 
             # Debug information
-            return render_template('home.html',renuka=results[0])
+            return render_template('home.html',R=results[0])
 
         except Exception as e:
             print(f"Error occurred: {e}")
-
-
-    
-
-
-
-
 
 
 if __name__ == "__main__":

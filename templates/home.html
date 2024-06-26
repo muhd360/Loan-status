@@ -30,10 +30,16 @@
                 </select>
             </div>
 
-            <!-- <div class="mb-3">
+            <div class="mb-3">
                 <label class="form-label">Dependents</label>
-                <input class="form-control" type="number" name="Dependents" min="0" placeholder="Number of Dependents">
-            </div> -->
+                <select class="form-control" name="Dependents">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3+">3+</option>
+                </select>
+            </div>
+            
 
             <div class="mb-3">
                 <label class="form-label">Education</label>
@@ -77,7 +83,7 @@
                 <label class="form-label">Credit History (Select best option)</label>
                 <select class="form-control" name="Credit_History" required>
                     <option value="" selected disabled>Select Credit History</option>
-                    <option value="1">exsists</option>
+                    <option value="1.0">exsists</option>
                     <option value="0">N.A</option>
 
                 </select>
@@ -87,11 +93,12 @@
                 <label class="form-label">Property Area</label>
                 <select class="form-control" name="Area" required>
                     <option value="" selected disabled>Select area</option>
-                    <option value="Urban">urban</option>
-                    <option value="Semiurban">semi</option>
-                    <option value="Rural">rural</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Semiurban">Semiurban</option>
+                    <option value="Rural">Rural</option>
                 </select>
             </div>
+            
 
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Submit Loan Application">
@@ -99,7 +106,7 @@
         </form>
     </div>
     <h2>
-        THE  prediction is {{renuka}}
+        THE  prediction is {{R}}
     </h2>
     <body>
 </html>
