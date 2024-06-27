@@ -7,7 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder,StandardScaler
-
+from sklearn.model_selection import train_test_split
 src_path = os.path.abspath(os.path.join("/home/muhd/Desktop/python-proj/mlproject"))
 sys.path.append(src_path)
 
@@ -81,7 +81,7 @@ class DataTransformation:
 
         try:
             train_df=pd.read_csv(train_path)
-            test_df=pd.read_csv(test_path)
+            #test_df=pd.read_csv(test_path)
             #test_df=test_df.drop(columns='Loan_ID',axis=1)
 
             logging.info("Read train and test data completed")
@@ -94,25 +94,31 @@ class DataTransformation:
             #numerical_columns = ["ApplicantIncome", "CoapplicantIncome","LoanAmount"]
 
 
-            input_feature_train_df=train_df.drop(columns=[target_column_name,'Loan_ID'],axis=1)
-            target_feature_train_df=train_df[target_column_name]
+            input_feature_df=train_df.drop(columns=[target_column_name,'Loan_ID'],axis=1)
+            target_feature_df=train_df[target_column_name]
             
-            target_feature_train_df.replace({'Y': 1, 'N': 0}, inplace=True)
+            target_feature_df.replace({'Y': 1, 'N': 0}, inplace=True)
 
-            input_feature_test_df=test_df.drop(columns=['Loan_ID'],axis=1)
+            #input_feature_test_df=test_df.drop(columns=['Loan_ID'],axis=1)
             #target_feature_test_df=test_df[target_column_name]
+
+            input_feature_train_df, input_feature_test_df, target_feature_train_df, target_feature_test_df = train_test_split(
+        
+            input_feature_df, target_feature_df, test_size=0.2, random_state=42)
 
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
 
-            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
-            test_arr=preprocessing_obj.transform(input_feature_test_df)
+            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)#xtrain
+            input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)#xtest
+            #target_feature_train_arr=preprocessing_obj.fit_transform(target_feature_train_df)#ytrain
+            #target_feature_test_arr=preprocessing_obj.fit_transform(target_feature_test_df)#ytest
 
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
-            #test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
             logging.info(f"Saved preprocessing object.")
 
