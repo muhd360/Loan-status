@@ -14,7 +14,7 @@ def index():
 @app.route('/predictdata', methods=['GET', 'POST'])
 def predict_datapoint():
     if request.method == 'GET':
-        return render_template('home.html')
+        return render_template('try1.html')
     else:
         try:
             
@@ -49,7 +49,7 @@ def predict_datapoint():
             print("after")
 
             # Debug information
-            return render_template('home.html',R=results[0])
+            return render_template('try1.html',R=results[0])
 
         except Exception as e:
             print(f"Error occurred: {e}")

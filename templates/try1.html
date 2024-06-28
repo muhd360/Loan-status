@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="login">
+        <h1>Loan Application Form</h1>
+        <form id="loanForm">
+            <legend>Loan Application</legend>
+
+            <div class="mb-3">
+                <label class="form-label">Loan ID</label>
+                <input type="text" class="form-control" name="LoanID" placeholder="Enter Loan ID" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-control" name="Gender" required>
+                    <option value="" selected disabled>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Married</label>
+                <select class="form-control" name="Married" required>
+                    <option value="" selected disabled>Marital Status</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dependents</label>
+                <select class="form-control" name="Dependents">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3+">3+</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Education</label>
+                <select class="form-control" name="Education" required>
+                    <option value="" selected disabled>Select option</option>
+                    <option value="Graduate">Graduate</option>
+                    <option value="Not Graduate">Not Graduate</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Self Employed</label>
+                <select class="form-control" name="Self_Employed" required>
+                    <option value="" selected disabled>Employment Type</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Applicant Income (₹)</label>
+                <input class="form-control" type="number" name="ApplicantIncome" min="0" required placeholder="Enter your annual income">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Coapplicant Income (₹) (Optional)</label>
+                <input class="form-control" type="number" name="CoapplicantIncome" min="0" placeholder="Enter co-applicant income (if applicable)">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Loan Amount (₹)</label>
+                <input class="form-control" type="number" name="LoanAmount" min="0" required placeholder="Enter loan amount">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Loan Term (months)</label>
+                <input class="form-control" type="number" name="Loan_Amount_Term" min="1" required placeholder="Enter loan term in months">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Credit History (Select best option)</label>
+                <select class="form-control" name="Credit_History" required>
+                    <option value="" selected disabled>Select Credit History</option>
+                    <option value="1.0">Exists</option>
+                    <option value="0">N.A</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Property Area</label>
+                <select class="form-control" name="Area" required>
+                    <option value="" selected disabled>Select area</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Semiurban">Semiurban</option>
+                    <option value="Rural">Rural</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit Loan Application</button>
+            </div>
+        </form>
+        <h2 id="predictionResult" style="display: none;">THE prediction is {{ r }}</h2>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

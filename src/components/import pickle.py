@@ -1,6 +1,6 @@
 import pickle
 import pandas as pd
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder,LabelEncoder
 from sklearn.pipeline import Pipeline
@@ -42,7 +42,7 @@ preprocessor = ColumnTransformer(
 # Create a pipeline with the preprocessor and the model
 model_pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('regressor', LinearRegression())
+    ('regressor', LogisticRegression())
 ])
 
 # Fit the pipeline on the training data
